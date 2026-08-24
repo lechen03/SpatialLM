@@ -9,8 +9,9 @@ from spatiallm.layout.layout import Layout
 from prepare_scannet import compute_obb, SCANNET_GT20_CLASSES, EXCLUDED_LABELS
 
 scene = sys.argv[1] if len(sys.argv) > 1 else "scene0000_00"
-d = torch.load(f"data/scannet/train/{scene}.pth", map_location="cpu", weights_only=False)
-with open("data/scannet/scannet_axis_align_matrix_trainval.pkl", "rb") as f:
+src = sys.argv[2] if len(sys.argv) > 2 else "data/scannet"
+d = torch.load(f"{src}/train/{scene}.pth", map_location="cpu", weights_only=False)
+with open(f"{src}/scannet_axis_align_matrix_trainval.pkl", "rb") as f:
     M = np.array(pickle.load(f)[scene])
 c = d["coord"] @ M[:3, :3].T
 c -= c.min(0)

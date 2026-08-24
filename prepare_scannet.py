@@ -183,4 +183,20 @@ if __name__ == "__main__":
         writer = csv.writer(f)
         writer.writerow(["id", "split"])
         writer.writerows(split_rows)
+
+    # benchmark label mapping for eval.py (underscores -> spaces, as eval.py
+    # applies class_name.replace("_", " ") before mapping)
+    class_names = sorted(
+        {
+            name.replace("_", " ")
+            for name in SCANNET_GT20_CLASSES.values()
+            if name not in ("wall", "floor")
+        }
+    )
+    with open(os.path.join(args.dst, "benchmark_categories.tsv"), "w", newline="") as f:
+        writer = csv.writer(f, delimiter="\t")
+        writer.writerow(["scannet18", "scannet18"])
+        for name in class_names:
+            writer.writerow([name, name])
+
     print(f"Done. {len(split_rows)} scenes -> {args.dst}")
