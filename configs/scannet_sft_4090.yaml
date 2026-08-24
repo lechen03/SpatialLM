@@ -1,0 +1,52 @@
+### model
+model_name_or_path: manycore-research/SpatialLM1.1-Qwen-0.5B
+trust_remote_code: true
+
+### method
+do_train: true
+# 方案A：冻结点云编码器（Sonata 本身已在 ScanNet 类数据上预训练过，
+# 冻结后无优化器状态和反向激活，单卡显存需求大幅下降，适合 24GB 的 4090）
+freeze_language_tower: false
+freeze_point_tower: true
+train_proj_only: false
+
+### dataset
+dataset: scannet_train
+eval_dataset: scannet_val
+dataset_dir: data/scannet_spatiallm
+template: spatiallm_qwen # spatiallm_qwen, spatiallm_llama
+num_bins: 1280
+do_augmentation: false
+random_rotation: true
+cutoff_len: 8192
+overwrite_cache: true
+preprocessing_num_workers: 8
+dataloader_num_workers: 8
+save_dir: saves/scannet_cache
+
+### output
+output_dir: saves/scannet_frozen
+logging_steps: 10
+save_steps: 500
+overwrite_output_dir: false
+save_total_limit: 5
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-5 # 不收敛可试 5.0e-5
+num_train_epochs: 10
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+pure_bf16: false
+bf16: true
+fp16: false
+tf32: true
+ddp_timeout: 180000000
+report_to: none # 需要 wandb 时改回 wandb 并先 wandb login
+max_new_tokens: 4096
+
+### eval
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 500
