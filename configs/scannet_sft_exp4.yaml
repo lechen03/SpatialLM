@@ -1,0 +1,56 @@
+### model
+# EXP4: 与 configs/scannet_sft_full_ds.yaml（EXP2）唯一的差异是起点模型——
+# 从一作发布的官方 ScanNet-SFT 检查点继续全参数微调（领域引导实验），
+# 其余超参逐字段一致，保证单变量对照。
+model_name_or_path: ysmao/SpatialLM1.1-Qwen-0.5B-ScanNet-SFT
+trust_remote_code: true
+
+### method
+do_train: true
+freeze_language_tower: false
+freeze_point_tower: false
+train_proj_only: false
+
+### deepspeed
+deepspeed: configs/ds_zero2.json
+
+### dataset
+dataset: scannet_train
+eval_dataset: scannet_val
+dataset_dir: data/scannet_spatiallm
+template: spatiallm_qwen
+num_bins: 1280
+do_augmentation: false
+random_rotation: true
+cutoff_len: 8192
+overwrite_cache: true
+preprocessing_num_workers: 8
+dataloader_num_workers: 8
+save_dir: saves/scannet_cache
+
+### output
+output_dir: saves/scannet_exp4
+logging_steps: 10
+save_steps: 500
+overwrite_output_dir: false
+save_total_limit: 5
+
+### train
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 1
+learning_rate: 1.0e-5
+num_train_epochs: 10
+lr_scheduler_type: cosine
+warmup_ratio: 0.03
+pure_bf16: false
+bf16: true
+fp16: false
+tf32: true
+ddp_timeout: 180000000
+report_to: none
+max_new_tokens: 4096
+
+### eval
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 500
