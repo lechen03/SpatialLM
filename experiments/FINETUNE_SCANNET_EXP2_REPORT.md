@@ -1,6 +1,6 @@
 # SpatialLM × ScanNet 微调实验报告（EXP2：解冻点云塔）
 
-> 日期：2026-08-25　|　服务器：4× RTX 4090（24GB）　|　基线：EXP1（`FINETUNE_SCANNET_EXP1.md`）
+> 日期：2026-08-25　|　服务器：4× RTX 4090（24GB）　|　基线：EXP1（`experiments/FINETUNE_SCANNET_EXP1_REPORT.md`）
 > 配置：`configs/scannet_sft_full_ds.yaml`（runbook 方案 B）　|　输出：`saves/scannet_full/`
 
 ---

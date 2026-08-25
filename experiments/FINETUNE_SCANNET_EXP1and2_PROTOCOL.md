@@ -380,6 +380,7 @@ PLY 带 RGB、米制、z 轴朝上（xy 无需对齐）、单场景 <32m×32m×2
 | `configs/scannet_sft_4090.yaml` | 方案 A：冻结点云塔微调（默认） |
 | `configs/scannet_sft_full_ds.yaml` | 方案 B：全量微调 + DeepSpeed ZeRO-2 |
 | `configs/ds_zero2.json` | DeepSpeed ZeRO-2 配置 |
-| `experiments/FINETUNE_SCANNET_EXP1.md` | 实验报告 EXP1（方案 A） |
-| `experiments/FINETUNE_SCANNET_EXP2.md` | 实验报告 EXP2（方案 B，解冻点云塔） |
+| `experiments/FINETUNE_SCANNET_EXP1and2_PROTOCOL.md` | 本文档：EXP1/EXP2 的服务器部署与训练协议（runbook） |
+| `experiments/FINETUNE_SCANNET_EXP1_REPORT.md` | 实验报告 EXP1（方案 A） |
+| `experiments/FINETUNE_SCANNET_EXP2_REPORT.md` | 实验报告 EXP2（方案 B，解冻点云塔） |
 | `data/scannet_spatiallm/` | 转换后的数据集（服务器上由 §5 生成，gitignore 不入库） |

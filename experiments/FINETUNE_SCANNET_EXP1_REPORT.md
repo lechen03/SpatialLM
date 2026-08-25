@@ -2,7 +2,7 @@
 
 > 日期：2026-08-24 ~ 08-25　|　服务器：4× RTX 4090（24GB），64 核 / 503GB RAM
 > 代码：`~/SpatialLM`（branch `scannet-finetune`，commit `c3970f1`）
-> 方案：**A**（`configs/scannet_sft_4090.yaml`，冻结点云塔）　|　Runbook：`FINETUNE_SCANNET.md`
+> 方案：**A**（`configs/scannet_sft_4090.yaml`，冻结点云塔）　|　Runbook：`experiments/FINETUNE_SCANNET_EXP1and2_PROTOCOL.md`
 
 ---
 
