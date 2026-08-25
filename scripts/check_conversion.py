@@ -1,10 +1,11 @@
+import os
 import sys
 
 import numpy as np
 import torch
 import pickle
 
-sys.path.insert(0, ".")
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from spatiallm.layout.layout import Layout
 from prepare_scannet import compute_obb, SCANNET_GT20_CLASSES, EXCLUDED_LABELS
 

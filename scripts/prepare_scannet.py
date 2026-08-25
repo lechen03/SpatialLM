@@ -2,11 +2,14 @@ import os
 import csv
 import argparse
 import pickle
+import sys
 from glob import glob
 
 import numpy as np
 import torch
 from tqdm import tqdm
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from spatiallm.layout.layout import Layout
 from spatiallm.layout.entity import Bbox

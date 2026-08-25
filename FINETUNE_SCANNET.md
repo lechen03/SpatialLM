@@ -10,7 +10,7 @@
 1. **任务边界**：从 §3 开始执行，到 §6 训练健康运行为止。**不要**自行执行 §7（推理/评估）——那是用户明确指示后才做的后续步骤。
 2. **逐步执行，不得跳步**：每个步骤都遵循「命令 → 验证 → 失败处理」三段。验证不通过时先按"失败处理"操作；仍无法解决就**停下**，把完整报错、你已尝试的操作、当前状态报告给用户，等待指示。
 3. **先查后做（幂等）**：每个步骤开头有"跳过条件"。如果该步骤的产物已存在且验证通过，跳过并在最终报告中注明，不要重复执行。
-4. **只改允许改的东西**：唯一允许编辑的是 `configs/*.yaml` 中本文档明确指出的字段。不要修改 `prepare_scannet.py`、`train.py`、`spatiallm/` 框架源码。
+4. **只改允许改的东西**：唯一允许编辑的是 `configs/*.yaml` 中本文档明确指出的字段。不要修改 `scripts/`、`train.py`、`spatiallm/` 框架源码。
 5. **如实报告**：向用户汇报时粘贴真实输出，不要转述或臆测。验证命令的预期输出写了具体值的，必须实际比对。
 6. **长任务**：环境安装中 flash-attn 编译可能需要 10–30 分钟，训练需要数小时。启动长任务后用日志轮询确认进展，不要提前判定失败或反复重启。
 7. **用户没有告诉你答案的事情（如 sudo 密码、找不到数据集）**：报告并询问，不要自行猜测绕过。
@@ -63,7 +63,7 @@ scp .\spatiallm_code.tar.gz user@server:~/
 
 ## 3. 解压代码
 
-**跳过条件**：`~/SpatialLM/prepare_scannet.py` 已存在且 §3.1 验证通过。
+**跳过条件**：`~/SpatialLM/scripts/prepare_scannet.py` 已存在且 §3.1 验证通过。
 
 ### 3.1 命令
 
@@ -75,9 +75,9 @@ tar -xzf ~/spatiallm_code.tar.gz --strip-components=1
 ### 3.2 验证
 
 ```bash
-ls ~/SpatialLM/prepare_scannet.py \
-   ~/SpatialLM/create_scannet_sharegpt.py \
-   ~/SpatialLM/check_conversion.py \
+ls ~/SpatialLM/scripts/prepare_scannet.py \
+   ~/SpatialLM/scripts/create_scannet_sharegpt.py \
+   ~/SpatialLM/scripts/check_conversion.py \
    ~/SpatialLM/configs/scannet_sft_4090.yaml \
    ~/SpatialLM/configs/scannet_sft_full_ds.yaml \
    ~/SpatialLM/configs/ds_zero2.json \
@@ -177,7 +177,7 @@ ls $SCANNET_SRC/scannet_axis_align_matrix_trainval.pkl
 
 ```bash
 cd ~/SpatialLM && conda activate spatiallm
-python prepare_scannet.py -s $SCANNET_SRC -d data/scannet_spatiallm
+python scripts/prepare_scannet.py -s $SCANNET_SRC -d data/scannet_spatiallm
 ```
 
 **预期**：进度条走完后输出 `Done. 15xx scenes -> data/scannet_spatiallm`，且：
@@ -192,7 +192,7 @@ head -3 data/scannet_spatiallm/benchmark_categories.tsv  # 18 类标签映射
 ### 5.3 抽查转换质量（必须通过）
 
 ```bash
-python check_conversion.py scene0000_00 $SCANNET_SRC
+python scripts/check_conversion.py scene0000_00 $SCANNET_SRC
 ```
 
 **预期输出末尾两行**：
@@ -209,7 +209,7 @@ class match: 26/26
 ### 5.4 生成 ShareGPT 训练数据（约 1 分钟）
 
 ```bash
-python create_scannet_sharegpt.py
+python scripts/create_scannet_sharegpt.py
 ```
 
 **预期**：
@@ -372,9 +372,14 @@ PLY 带 RGB、米制、z 轴朝上（xy 无需对齐）、单场景 <32m×32m×2
 
 | 文件 | 用途 |
 |---|---|
-| `prepare_scannet.py` | ScanNet .pth → PLY + GT layout（轴对齐、实例 OBB、18 类），顺带生成 split.csv 与 benchmark_categories.tsv |
-| `create_scannet_sharegpt.py` | 生成 ShareGPT 训练数据（免训练栈依赖） |
-| `check_conversion.py` | 转换质量抽查：`python check_conversion.py <scene> <src路径>` |
+| `scripts/prepare_scannet.py` | ScanNet .pth → PLY + GT layout（轴对齐、实例 OBB、18 类），顺带生成 split.csv 与 benchmark_categories.tsv |
+| `scripts/create_scannet_sharegpt.py` | 生成 ShareGPT 训练数据（免训练栈依赖） |
+| `scripts/check_conversion.py` | 转换质量抽查：`python scripts/check_conversion.py <scene> <src路径>` |
+| `scripts/eval_scannet18.py` | 18 类完整口径 F1 评估（stock eval.py 只覆盖 7/18 类，见 experiments/ 报告） |
+| `scripts/analyze_errors.py` | 逐场景误差分类与匹配对几何分析 |
 | `configs/scannet_sft_4090.yaml` | 方案 A：冻结点云塔微调（默认） |
 | `configs/scannet_sft_full_ds.yaml` | 方案 B：全量微调 + DeepSpeed ZeRO-2 |
 | `configs/ds_zero2.json` | DeepSpeed ZeRO-2 配置 |
+| `experiments/FINETUNE_SCANNET_EXP1.md` | 实验报告 EXP1（方案 A） |
+| `experiments/FINETUNE_SCANNET_EXP2.md` | 实验报告 EXP2（方案 B，解冻点云塔） |
+| `data/scannet_spatiallm/` | 转换后的数据集（服务器上由 §5 生成，gitignore 不入库） |

@@ -24,6 +24,7 @@ import os.path as osp
 import json
 import math
 import argparse
+import sys
 from collections import defaultdict
 from itertools import product
 
@@ -31,6 +32,7 @@ import numpy as np
 import pandas as pd
 from scipy.optimize import linear_sum_assignment
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from eval import (
     read_label_mapping,
     assign_class_map,

@@ -7,10 +7,13 @@ training environment.
 
 import os
 import json
+import sys
 from glob import glob
 
 import pandas as pd
 from tqdm import tqdm
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from spatiallm.layout.layout import Layout
 

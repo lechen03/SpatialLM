@@ -15,12 +15,14 @@ Usage: same args as eval.py, e.g.
 
 import os
 import argparse
+import sys
 from collections import defaultdict
 
 import numpy as np
 import pandas as pd
 from terminaltables import AsciiTable
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from eval import (
     read_label_mapping,
     assign_class_map,
