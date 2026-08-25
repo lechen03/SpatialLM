@@ -332,7 +332,7 @@ python eval.py \
     --label_from scannet18 --label_to scannet18
 ```
 
-参考：官方（先官方数据训练再微调）F1@.25 = 65.6；直接用 1201 场景微调达 50~60@.25 属正常。
+参考锚点（来源 `README.md` Benchmark Results → 3D Object Detection）：官方 SpatialLM1.1-Qwen-0.5B 在**同协议**（SpatialLM-Dataset 预训练 checkpoint + ScanNet 1201 场景微调 + val 312 评测）下 F1@.25 = 65.6。该数字是全量微调 + 官方未公开的训练配方与 GT 生成方式取得的；我们方案 B（全量微调）与之基本同量级，方案 A（冻结点云塔）预期略低。评测用的 GT 由本流水线自动生成，与官方评测 GT 未必逐框一致，数字只作量级参照，不作达标线。
 
 ### 7.4 可视化（rerun）
 
