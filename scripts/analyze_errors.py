@@ -78,10 +78,12 @@ def main():
     ap.add_argument("--gt_dir", default="data/scannet_spatiallm/layout")
     ap.add_argument("--metadata", default="data/scannet_spatiallm/val.csv")
     ap.add_argument("--label_mapping", default="data/scannet_spatiallm/benchmark_categories.tsv")
+    ap.add_argument("--label_from", default="scannet18")
+    ap.add_argument("--label_to", default="scannet18")
     ap.add_argument("--tag", default="final")
     args = ap.parse_args()
 
-    class_map = read_label_mapping(args.label_mapping, "scannet18", "scannet18")
+    class_map = read_label_mapping(args.label_mapping, args.label_from, args.label_to)
     scene_ids = pd.read_csv(args.metadata)["id"].tolist()
 
     out_dir = "data/scannet_spatiallm/error_analysis"
