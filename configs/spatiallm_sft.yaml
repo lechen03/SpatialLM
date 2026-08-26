@@ -22,7 +22,7 @@ dataloader_num_workers: 8
 save_dir: saves/arkitscenes
 
 ### output
-output_dir: saves
+output_dir: /media/drive1_3TB/chenle/SpatialLM/saves
 logging_steps: 10
 save_steps: 500
 overwrite_output_dir: false

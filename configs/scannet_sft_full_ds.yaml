@@ -28,7 +28,7 @@ dataloader_num_workers: 8
 save_dir: saves/scannet_cache
 
 ### output
-output_dir: saves/scannet_full
+output_dir: /media/drive1_3TB/chenle/SpatialLM/saves/scannet_full
 logging_steps: 10
 save_steps: 500
 overwrite_output_dir: false
