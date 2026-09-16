@@ -2,6 +2,9 @@ data/
 saves/
 *.pid
 
+# Vendored external repos (tracked in their own git, e.g. repos/scenecot)
+repos/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
