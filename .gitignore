@@ -1,5 +1,6 @@
 data/
 saves/
+logs/
 *.pid
 
 # Vendored external repos (tracked in their own git, e.g. repos/scenecot)
